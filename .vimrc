@@ -50,3 +50,27 @@ let g:syntastic_check_on_wq = 0
 
 " HTML5 Linter
 let g:syntastic_html_tidy_exec = 'tidy'
+
+"" vim-javascript
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let javascript_enable_domhtmlcss=1
+
+"" vim-markdown
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:vim_markdown_folding_disabled=1
+let g:vim_markdown_frontmatter=1
+
+" https://github.com/plasticboy/vim-markdown
+" http://www.cirosantilli.com/markdown-style-guide/
+" TODO: Key config for vim-markdown
+
+"" vim-fugitive
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" vim-airline
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"" vim-gitgutter
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
