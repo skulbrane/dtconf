@@ -6,11 +6,50 @@ runtime! plugin/sensible.vim
 " Add overrides...
 
 " Local config
+"set term=xterm-256color
+set background=dark
+colorscheme solarized 
 set number
 let mapleader = ','
 
+set encoding=utf8
+set nobackup
+set nowb
+set noswapfile
+
+set expandtab
+set smarttab
+set shiftwidth=4
+set tabstop=4
+
+set lbr
+set tw=500
+
+set ai    " Auto-indent
+set si    " Smart-indent
+set wrap  " Wrap lines
+
+" Status Line
+" Always show the status line
+set laststatus=2
+
+" " Format the status line
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l}
+
 " Keybinds
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Toggle paste mode on and off
+map <leader>pp :setlocal paste!<cr>
+
+
+" Open vimgrep and put the cursor in the right position
+map <leader>g :vimgrep // **/*.<left><left><left><left><left><left><left>
+
+" Vimgreps in the current file
+map <leader><space> :vimgrep // <C-R>%<C-A><right><right><right><right><right><right><right><right><right>
+
+" When you press gv you vimgrep after the selected text
+vnoremap <silent> gv :call VisualSelection('gv')<CR>
 
 " NERDTree
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -73,4 +112,14 @@ let g:vim_markdown_frontmatter=1
 "" vim-gitgutter
 " """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Functions
+" """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Returns true if paste mode is enabled
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    en
+    return ''
+endfunction
 
