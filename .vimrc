@@ -16,6 +16,7 @@ set encoding=utf8
 set nobackup
 set nowb
 set noswapfile
+set noundofile
 
 set expandtab
 set smarttab
