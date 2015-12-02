@@ -1,0 +1,40 @@
+# Globals
+export DATE=$(date +'20%y-%m-%d')
+export TRUE=1
+export FALSE=0
+
+
+
+# Required Environment Variables
+#
+# SYSTEMROOT - Windows Base Dir (usually X:\Windows)
+MINGW64_ID="MINGW64"
+
+function print_motd() {
+    echo $ - "Initialized shell: "$SHELL""
+    echo $(uname -a)
+    echo $(uptime)
+    #echo $(df -h /)
+}
+
+# Print error if any essential envar missing
+# TODO: Define and try some fallbacks
+# 
+# ${STATE?"Need to set STATE"}
+# ${DEST:?"Need to set DEST non-empty"}
+function ensure_environment() {
+    # TODO...
+    echo $FALSE 
+}
+
+function set_path() {
+    os=$(uname -o)
+
+
+    if [[ $os -eq $MINGW64_ID ]]; then
+        $(export PATH=/e/Portable/Win/msys64/mingw64/bin:$PATH)
+
+    export PATH="~/bin/:/usr/bin:/opt/bin/:/c/Windows/System32/"
+}
+
+print_motd

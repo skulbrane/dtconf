@@ -1,3 +1,5 @@
+#echo "exec: $0/$1"
+
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
 
@@ -5,7 +7,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="bureau"
+ZSH_THEME="nanotech"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -30,7 +32,7 @@ ZSH_THEME="bureau"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -49,30 +51,30 @@ ZSH_THEME="bureau"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(gitm battery)
 
 # User configuration
 
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
+#export PATH="/usr/local/bin:/usr/bin:/bin:/opt/bin:/c/Portable/ConEmu:/c/Portable/ConEmu/ConEmu:/c/Program Files/Python 3.5:/c/Program Files/Python 3.5/Scripts:/c/Program Files/Python 3.5/Lib/site-packages:/c/Program Files/Python 3.5:/c/Program Files (x86)/Intel/iCLS Client:/c/Program Files/Intel/iCLS Client:/c/WINDOWS/system32:/c/WINDOWS:/c/WINDOWS/System32/Wbem:/c/WINDOWS/System32/WindowsPowerShell/v1.0:/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/c/Program Files/Intel/WiFi/bin:/c/Program Files/Common Files/Intel/WirelessCommon:/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/c/Program Files (x86)/GtkSharp/2.12/bin:/c/Program Files/nodejs:/c/Users/Geoffrey/.dnx/bin:/c/Program Files/Microsoft DNX/Dnvm:/c/Program Files (x86)/Windows Kits/8.1/Windows Performance Toolkit:/c/Ruby22-x64/bin:/c/Program Files (x86)/Microsoft VS Code/bin:/c/Users/Geoffrey/AppData/Roaming/npm:/c/Portable/curl:c/Portable/ConEmu:/c/Portable/npp.6.7.7:/c/Portable/PuTTYPortable:/c/Portable/Sublime Text Build 3083:/c/Portable:/c/ctags58:/c/vim72:/c/Program Files/Git/bin:/c/unxutils/bin:/c/unxutils/usr/local/wbin"
+export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='vim'
+fi
 
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+export ARCHFLAGS="-arch x86_64"
 
 # ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
+export SSH_KEY_PATH="~/.ssh/id_rsa"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -82,3 +84,17 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+
+if [[ -z $DTCONF ]]; then
+  export DTCONF=$HOME/dtconf/
+fi
+
+# Load all custom startup scripts
+# We could leverage $ZSH_CUSTOM for this, but we may want to
+# decouple any oh-my-zsh deps in our zsh startup scripts...
+if [[ -d $DTCONF/zshrc.d ]]; then
+  for file in $DTCONF/zshrc.d/*.zsh; do
+    print "sourcing file: %s" $file
+    source $file
+fi
