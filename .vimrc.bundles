@@ -1,0 +1,95 @@
+" Mostly stolen from [spf13](https://github.com/spf13/spf13-vim)
+
+
+" Be nice and check for multi_byte even if the config requires
+" multi_byte support most of the time
+" On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+" across (heterogeneous) systems easier.
+if has('win32') || has('win64')
+    set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+
+    if has("multi_byte")
+        " Windows cmd.exe still uses cp850. If Windows ever moved to
+        " Powershell as the primary terminal, this would be utf-8
+        set termencoding=cp850
+        " Let Vim use utf-8 internally, because many scripts require this
+        set encoding=utf-8
+        setglobal fileencoding=utf-8
+        " Windows has traditionally used cp1252, so it's probably wise to
+        " fallback into cp1252 instead of eg. iso-8859-15.
+        " Newer Windows files might contain utf-8 or utf-16 LE so we might
+        " want to try them first.
+        set fileencodings=ucs-bom,utf-8,utf-16le,cp1252,iso-8859-15
+    endif
+endif
+
+set nocompatible
+filetype off
+
+" Set runtime path to incliude vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+set background=dark
+
+" Add bundles
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'jnurmine/Zenburn'
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'
+Plugin 'spf13/vim-colors'
+Plugin 'tpope/vim-surround'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'matchit.zip'
+
+"Plugin 'bling/vim-airline'
+"Plugin 'mattn/webapi-vim'
+"Plugin 'Wildog/airline-weather.vim'
+
+" Programming
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-fugitive'
+Plugin 'valloric/YouCompleteMe' " Local deps: https://github.com/Valloric/YouCompleteMe#mac-os-x-super-quick-installation
+
+
+" Programming:Python
+" Plugin 'vim-scripts/pythoncomplete' " NOTE: Did not appear to work..."
+Plugin 'klen/python-mode'
+Plugin 'vim-scripts/indentpython.vim'
+python_highlight_all=1
+
+
+" if (has("python") || has("python3")) && exists('g:spf13_use_powerline') && !exists('g:spf13_use_old_powerline')
+" if (executable("python") || executable("python3")
+    Plugin 'Lokaltog/powerline', {'rtp':'/powerline/bindings/vim'}
+"    elseif exists('g:spf13_use_powerline') && exists('g:spf13_use_old_powerline')
+"        Plugin 'Lokaltog/vim-powerline'
+"    else
+"        Plugin'bling/vim-airline'
+"    endif
+    Plugin 'powerline/fonts'
+    Plugin 'bling/vim-bufferline'
+    Plugin 'Lokaltog/vim-easymotion'
+    Plugin 'jistr/vim-nerdtree-tabs'
+    Plugin 'flazz/vim-colorschemes'
+    Plugin 'mbbill/undotree'
+    Plugin 'nathanaelkane/vim-indent-guides'
+"    if !exists('g:spf13_no_views')
+"        Bundle 'vim-scripts/restore_view'
+"    endif
+"            Bundle 'mhinz/vim-signify'
+"            Bundle 'tpope/vim-abolish.git'
+"            Bundle 'osyo-manga/vim-over'
+    Plugin 'kana/vim-textobj-user'
+    Plugin 'kana/vim-textobj-indent'
+    Plugin 'gcmt/wildfire.vim'
+    Plugin 'Matt-Deacalion/vim-systemd-syntax'
+"endif
+
+call vundle#end()
+filetype plugin indent on

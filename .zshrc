@@ -1,13 +1,39 @@
-#echo "exec: $0/$1"
+thisfile=""$0"/"$1""
+
+source "$HOME/dtconf/shlib/shlenv.zsh"
+
+export TERM="xterm-256color"
+
+# Used to guess vi or emacs input mode
+export EDITOR="$(which vim)"
 
 # Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
+export ZSH=/root/.oh-my-zsh
+
+PATH_LOCAL='/root/local/bin'
+
+if [ DT_PROMPT_STYLE = "liquid" ]; then
+    [[ $- = *i*  ]] && source ~/dtconf/ext/liquidprompt/liquidprompt.plugin.zsh
+fi
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="nanotech"
+ZSH_THEME="powerline"
+
+# oh-my-zsh powerline-theme config
+POWERLINE_RIGHT_A="$PYENV_PROMPT"
+POWERLINE_RIGHT_A_COLOR_FRONT="green"
+POWERLINE_RIGHT_A_COLOR_BACK="black"
+POWERLINE_SHORT_HOST_NAME="true"
+POWERLINE_PATH="short"
+POWERLINE_SHOW_GIT_ON_RIGHT="true"
+POWERLINE_DETECT_SSH="true"
+POWERLINE_DATE_FORMAT="%D{%d-%m}"
+
+POWERLINE_HIDE_USER_NAME="false"
+#POWERLINE_HIDE_HOST_NAME="false"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -17,7 +43,7 @@ ZSH_THEME="nanotech"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+#"" DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
@@ -32,7 +58,7 @@ ZSH_THEME="nanotech"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
+# COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -47,16 +73,21 @@ COMPLETION_WAITING_DOTS="true"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(gitm battery)
+plugins=(git git-extras pyenv virtualenv pep8 colored-man-pages colorize bower encode64 fancy-ctrl-z gnu-utils go golang grunt heroku urltools vagrant vi-mode web-search zsh-navigation-tools)
+# broken? virtualenvwrapper
 
 # User configuration
+export PATH="$PATH_LOCAL"":""/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+# export MANPATH="/usr/local/man:$MANPATH"
 
-#export PATH="/usr/local/bin:/usr/bin:/bin:/opt/bin:/c/Portable/ConEmu:/c/Portable/ConEmu/ConEmu:/c/Program Files/Python 3.5:/c/Program Files/Python 3.5/Scripts:/c/Program Files/Python 3.5/Lib/site-packages:/c/Program Files/Python 3.5:/c/Program Files (x86)/Intel/iCLS Client:/c/Program Files/Intel/iCLS Client:/c/WINDOWS/system32:/c/WINDOWS:/c/WINDOWS/System32/Wbem:/c/WINDOWS/System32/WindowsPowerShell/v1.0:/c/Program Files/Intel/Intel(R) Management Engine Components/DAL:/c/Program Files/Intel/Intel(R) Management Engine Components/IPT:/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/DAL:/c/Program Files (x86)/Intel/Intel(R) Management Engine Components/IPT:/c/Program Files/Intel/WiFi/bin:/c/Program Files/Common Files/Intel/WirelessCommon:/c/Program Files (x86)/NVIDIA Corporation/PhysX/Common:/c/Program Files (x86)/GtkSharp/2.12/bin:/c/Program Files/nodejs:/c/Users/Geoffrey/.dnx/bin:/c/Program Files/Microsoft DNX/Dnvm:/c/Program Files (x86)/Windows Kits/8.1/Windows Performance Toolkit:/c/Ruby22-x64/bin:/c/Program Files (x86)/Microsoft VS Code/bin:/c/Users/Geoffrey/AppData/Roaming/npm:/c/Portable/curl:c/Portable/ConEmu:/c/Portable/npp.6.7.7:/c/Portable/PuTTYPortable:/c/Portable/Sublime Text Build 3083:/c/Portable:/c/ctags58:/c/vim72:/c/Program Files/Git/bin:/c/unxutils/bin:/c/unxutils/usr/local/wbin"
-export MANPATH="/usr/local/man:$MANPATH"
+# Github 'hub' config, $PATH must contain 'hub'
+eval "$(hub alias -s)"
+export GITHUB_USER='skulbrane'
 
 source $ZSH/oh-my-zsh.sh
 
@@ -65,16 +96,31 @@ export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='vim'
+    export EDITOR="$(which vim)"
+ else
+    export EDITOR="$(which vim)"
 fi
 
 # Compilation flags
 export ARCHFLAGS="-arch x86_64"
 
 # ssh
-export SSH_KEY_PATH="~/.ssh/id_rsa"
+#export SSH_KEY_PATH="~/.ssh/dsa_id"
+
+# TODO: Configurable intall location
+if [[ -z "$DT_HOME" ]]; then
+    export DTCONF="$HOME/dtconf/"
+fi
+
+# Load all custom startup scripts
+# We could leverage $ZSH_CUSTOM for this, but we may want to
+# decouple any oh-my-zsh deps in our zsh startup scripts...
+if [[ -d $DTCONF/.zshrc.d ]]; then
+    for file in $DTCONF/.zshrc.d/*.zsh; do
+        print "sourcing file: %s" "$file"
+        source "$file"
+    done
+fi
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -84,17 +130,11 @@ export SSH_KEY_PATH="~/.ssh/id_rsa"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#
 
-if [[ -z $DTCONF ]]; then
-  export DTCONF=$HOME/dtconf/
-fi
-
-# Load all custom startup scripts
-# We could leverage $ZSH_CUSTOM for this, but we may want to
-# decouple any oh-my-zsh deps in our zsh startup scripts...
-if [[ -d $DTCONF/zshrc.d ]]; then
-  for file in $DTCONF/zshrc.d/*.zsh; do
-    print "sourcing file: %s" $file
-    source $file
-fi
+# Powerline zsh
+#function _update_ps1() {
+#    export PROMPT="$(~/powerline-zsh.py $?)"
+#}
+#precmd() {
+#    _update_ps1
+#}

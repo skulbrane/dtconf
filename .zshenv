@@ -4,4 +4,6 @@
 #   * should **NOT** contain comannds that produce output or assume shell is attached 
 #     to a tty
 
-#echo "exec: $0/$1"
+echo "[*] exec: $0/$1"
+
+[[ -a "$HOME"/.zlogin ]] && source "$HOME"/.zlogin

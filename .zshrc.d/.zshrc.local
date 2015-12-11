@@ -3,13 +3,6 @@ export DATE=$(date +'20%y-%m-%d')
 export TRUE=1
 export FALSE=0
 
-
-
-# Required Environment Variables
-#
-# SYSTEMROOT - Windows Base Dir (usually X:\Windows)
-MINGW64_ID="MINGW64"
-
 function print_motd() {
     echo $ - "Initialized shell: "$SHELL""
     echo $(uname -a)
@@ -24,17 +17,28 @@ function print_motd() {
 # ${DEST:?"Need to set DEST non-empty"}
 function ensure_environment() {
     # TODO...
-    echo $FALSE 
+    echo $FALSE
 }
 
 function set_path() {
     os=$(uname -o)
 
 
-    if [[ $os -eq $MINGW64_ID ]]; then
-        $(export PATH=/e/Portable/Win/msys64/mingw64/bin:$PATH)
-
-    export PATH="~/bin/:/usr/bin:/opt/bin/:/c/Windows/System32/"
+    if [ ! "DT_OS_TYPE" -eq "$(is_linux)" ]; then
+        if [[ $os -eq $MINGW64_ID ]]; then
+            $(export PATH=/e/Portable/Win/msys64/mingw64/bin:$PATH)
+            $(export PATH="~/bin/:/usr/bin:/opt/bin/:/c/Windows/System32/")
+        fi
+    fi
 }
+
+
+if [ ! "$DT_OS_TYPE" -eq "$(is_linux)" ]; then
+    # Required Environment Variables
+    #
+    # SYSTEMROOT - Windows Base Dir (usually X:\Windows)
+    MINGW64_ID="MINGW64"
+fi
+
 
 print_motd
